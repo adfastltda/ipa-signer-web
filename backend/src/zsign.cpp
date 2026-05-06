@@ -6,7 +6,6 @@
 #include <libgen.h>
 #include <dirent.h>
 #include <getopt.h>
-#include <napi.h>
 
 const struct option options[] = {
 	{"debug", no_argument, NULL, 'd'},
@@ -270,19 +269,6 @@ int main(int argc, char *argv[])
 		RemoveFolder(strFolder.c_str());
 	}
 
-	gtimer.Print(">>> Done.");
+	ZLog::Print("\n>>> Done.\n");
 	return bRet ? 0 : -1;
 }
-
-Napi::String SignIPA(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    std::string signedMessage = "IPA signed using zsign!";
-    return Napi::String::New(env, signedMessage);
-}
-
-Napi::Object Init(Napi::Env env, Napi::Object exports) {
-    exports.Set(Napi::String::New(env, "signIPA"), Napi::Function::New(env, SignIPA));
-    return exports;
-}
-
-NODE_API_MODULE(zsign, Init)

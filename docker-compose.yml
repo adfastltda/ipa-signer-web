@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: zsign-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - zsign-network
+
+  frontend:
+    build: ./frontend
+    container_name: zsign-frontend
+    ports:
+      - "8080:80"
+    # API_URL vazio = usa proxy reverso /api
+    environment:
+      - API_URL=
+    depends_on:
+      - backend
+    networks:
+      - zsign-network
+
+networks:
+  zsign-network:
+    driver: bridge
